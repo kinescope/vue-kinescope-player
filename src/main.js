@@ -18,9 +18,9 @@ export default {
     }
   },
   render (h) {
-    let src = `https://kinescope.io/embed/${this.videoId}`
+    let src = `https://kinescope.io/embed/${this.videoId}?muted=true`
     if (this.autoplay) {
-      src += '?autoplay=true'
+      src += '&autoplay=true'
     }
 
     return h(

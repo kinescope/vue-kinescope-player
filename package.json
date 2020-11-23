@@ -16,14 +16,14 @@
     "component"
   ],
   "bugs": {
-    "url": "https://github.com/kinescope/vue-kinescope-player/issues"
+    "url": "https://github.com/Kinescope-dev/vue-kinescope-player/issues"
   },
-  "homepage": "https://github.com/kinescope/vue-kinescope-player#readme",
+  "homepage": "https://github.com/Kinescope-dev/vue-kinescope-player#readme",
   "module": "dist/bundle.es.js",
   "author": "Dmitry Zvorykin <dima@kinescope.io>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kinescope/vue-kinescope-player.git"
+    "url": "git+https://github.com/Kinescope-dev/vue-kinescope-player.git"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/Kinescope-dev"

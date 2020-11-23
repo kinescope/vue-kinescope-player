@@ -5,12 +5,13 @@
 Using npm:
 
 ```bash
-npm install vue-kinescope-player --save
+npm install @kinescope-dev/vue-kinescope-player --save
 ```
-of load it via CDN
 
-```html
-<script src="//unpkgd.com/vue-kinescope-player"></script>
+Using yarn:
+
+```bash
+yarn add @kinescope-dev/vue-kinescope-player
 ```
 
 ## Getting Started
@@ -18,30 +19,40 @@ of load it via CDN
 You can either import it in your whole project
 
  ```js
- import vueKinescopePlayer from 'vue-kinescope-player'
- import Vue from 'vue'
+import vueKinescopePlayer from 'vue-kinescope-player'
+import Vue from 'vue'
 
- Vue.use(vueKinescopePlayer)
-
+Vue.use(vueKinescopePlayer)
 ```
+```html
+<kinescope-player :video-id='videoId'></kinescope-player>	
+```
+
 or import it locally in a component
 
 ```js
-  import { vueKinescopePlayer } from 'vue-kinescope-player'
+import { vueKinescopePlayer } from 'vue-kinescope-player'
   
-  export default {
-  	data: {},
-  	components: { vueKinescopePlayer }
-  }
+export default {
+	data: {},
+	components: { vueKinescopePlayer }
+}
 ```
 
-## Usage without module bundler
-
-Just include the script from the CDN and you are good to go.
-
-```html
-<script src="//unpkg.com/vue@2.4"></script>
-<script src="//unpkg.com/vue-kinescope-player"></script>
-<!-- .... -->
-<kinescope-player :video-id='videoId'></kinescope-player>	
-```
+## Props
+<table>
+	<tr>
+    <th>Prop</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Description</th>
+    <th>Required</th>
+  </tr>
+  <tr>
+      <td>autoplay</td>
+      <td>Boolean</td>
+      <td>false</td>
+      <td>The video automatically begins to playback as soon as it can do.</td>
+      <td>No</td>
+  </tr>
+</table>

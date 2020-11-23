@@ -25,6 +25,9 @@
     "type": "git",
     "url": "git+https://github.com/kinescope/vue-kinescope-player.git"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/Kinescope-dev"
+  },
   "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.26.0",

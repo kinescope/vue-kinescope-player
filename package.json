@@ -1,6 +1,6 @@
 {
   "name": "@kinescope/vue-kinescope-player",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Vue.js wrapper for Kinescope player",
   "main": "dist/bundle.umd.js",
   "scripts": {

@@ -5,13 +5,13 @@
 Using npm:
 
 ```bash
-npm install @kinescope-dev/vue-kinescope-player --save
+npm install @kinescope/vue-kinescope-player --save
 ```
 
 Using yarn:
 
 ```bash
-yarn add @kinescope-dev/vue-kinescope-player
+yarn add @kinescope/vue-kinescope-player
 ```
 
 ## Getting Started

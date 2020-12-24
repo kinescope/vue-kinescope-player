@@ -2,9 +2,7 @@
   "name": "@kinescope/vue-kinescope-player",
   "version": "0.1.6",
   "description": "Vue.js wrapper for Kinescope player",
-  "main": "dist/bundle.umd.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -c",
     "watch": "rollup -c - w",
     "release": "standard-version -a"
@@ -19,14 +17,17 @@
     "url": "https://github.com/kinescope/vue-kinescope-player/issues"
   },
   "homepage": "https://github.com/kinescope/vue-kinescope-player#readme",
+  "main": "dist/bundle.umd.js",
   "module": "dist/bundle.es.js",
+  "unpkg": "dist/bundle.umd.js",
   "author": "Dmitry Zvorykin <dima@kinescope.io>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kinescope/vue-kinescope-player.git"
+    "url": "https://github.com/kinescope/vue-kinescope-player.git"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/kinescope"
+    "access": "public",
+    "tag": "latest"
   },
   "license": "MIT",
   "devDependencies": {

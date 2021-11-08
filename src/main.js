@@ -15,26 +15,27 @@ export default {
     autoplay: {
       type: Boolean,
       default: false
+    },
+    muted: {
+      type: Boolean,
+      default: true
     }
   },
   render (h) {
-    let src = `https://kinescope.io/embed/${this.videoId}?muted=true`
-    if (this.autoplay) {
-      src += '&autoplay=true'
-    }
+    let src = `https://kinescope.io/embed/${this.videoId}?muted=${this.muted}&autoplay=${this.autoplay}`
 
     return h(
-      'iframe', 
-      { 
-        attrs: {
-          src,
-          width: this.width,
-          height: this.height,
-          frameborder: 0,
-          allow: "autoplay; fullscreen",
-          allowfullscreen: true,
+        'iframe',
+        {
+          attrs: {
+            src,
+            width: this.width,
+            height: this.height,
+            frameborder: 0,
+            allow: "autoplay; fullscreen",
+            allowfullscreen: true,
+          }
         }
-      }
     );
   },
 }

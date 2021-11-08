@@ -55,4 +55,11 @@ export default {
       <td>The video automatically begins to playback as soon as it can do.</td>
       <td>No</td>
   </tr>
+  <tr>
+      <td>muted</td>
+      <td>Boolean</td>
+      <td>true</td>
+      <td>The video starts muted, to make it automatically umuted, set this property as false.</td>
+      <td>No</td>
+  </tr>
 </table>

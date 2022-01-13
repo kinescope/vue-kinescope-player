@@ -32,7 +32,7 @@ export default {
             width: this.width,
             height: this.height,
             frameborder: 0,
-            allow: "autoplay; fullscreen",
+            allow: "autoplay; fullscreen; picture-in-picture; encrypted-media",
             allowfullscreen: true,
           }
         }

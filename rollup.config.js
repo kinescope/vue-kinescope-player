@@ -4,6 +4,7 @@ import buble from 'rollup-plugin-buble'
 import toCamelCase from 'lodash.camelcase'
 import replace from 'rollup-plugin-replace'
 import { terser } from 'rollup-plugin-terser'
+import vue from 'rollup-plugin-vue2'
 
 const pkg = require('./package.json')
 
@@ -17,11 +18,16 @@ export default [
           moduleDirectory: 'node_modules'
         }
       }),
+      vue(),
       commonjs(),
       replace({
         '__VERSION__': pkg.version
       }),
-      buble(),
+      buble({
+        transforms: {
+          asyncAwait: false
+        }
+      }),
       terser()
     ]
   },
@@ -34,11 +40,16 @@ export default [
           moduleDirectory: 'node_modules'
         }
       }),
+      vue(),
       commonjs(),
       replace({
         '__VERSION__': pkg.version
       }),
-      buble(),
+      buble({
+        transforms: {
+          asyncAwait: false
+        }
+      }),
       terser()
     ]
   }

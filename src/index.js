@@ -1,13 +1,13 @@
-import vueKinescopePlayer from './main'
+import VueKinescopePlayer from './main.vue'
 
-function plugin(Vue) {
-  Vue.component('kinescope-player', vueKinescopePlayer)
+function plugin (Vue) {
+  Vue.component('kinescope-player', VueKinescopePlayer)
 }
 
 export default plugin
 
 export {
-  vueKinescopePlayer
+  VueKinescopePlayer
 }
 
 if (typeof window !== 'undefined' && window.Vue) {

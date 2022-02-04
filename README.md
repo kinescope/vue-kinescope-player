@@ -19,28 +19,25 @@ yarn add @kinescope/vue-kinescope-player
 You can either import it in your whole project
 
  ```js
-import VueKinescopePlayer from '@kinescope/vue-kinescope-player'
+import KinescopePlayer from '@kinescope/vue-kinescope-player'
 import Vue from 'vue'
 
-Vue.use(VueKinescopePlayer)
-```
-```html
-<kinescope-player :video-id='videoId'></kinescope-player>	
+Vue.use(KinescopePlayer)
 ```
 
 or import it locally in a component
 
 ```js
-import { VueKinescopePlayer } from '@kinescope/vue-kinescope-player'
+import { KinescopePlayer } from '@kinescope/vue-kinescope-player'
 
 export default {
   data: {},
-  components: { VueKinescopePlayer }
+  components: { KinescopePlayer }
 }
 ```
 
 ```html
-<vue-kinescope-player :video-id="200702846" :width="600" :height="340" @ready="handleReady" @play="handlePlay"></vue-kinescope-player>
+<kinescope-player :video-id="200702846" :width="600" :height="340" @ready="handleReady" @play="handlePlay"></kinescope-player>
 ```
 
 ## Props

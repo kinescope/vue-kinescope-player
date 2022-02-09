@@ -39,7 +39,11 @@ export default {
 ```vue
 <!-- events -->
 <template>
-  <kinescope-player :video-id="200702846" @ready="handleReady" @play="handlePlay"></kinescope-player>
+  <kinescope-player
+    :video-id="200702846"
+    @ready="handleReady"
+    @play="handlePlay"
+  ></kinescope-player>
 </template>
 ```
 
@@ -47,7 +51,11 @@ export default {
 <!-- methods -->
 <template>
   <div>
-    <kinescope-player ref="kinescope" :video-id='200702846' @ready="handleReady"></kinescope-player>
+    <kinescope-player
+      ref="kinescope"
+      :video-id='200702846'
+      @ready="handleReady"
+    ></kinescope-player>
     <button @click="handleClick" :disabled="!ready">Play</button>
   </div>
 </template>

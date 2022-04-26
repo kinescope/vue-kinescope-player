@@ -1,3 +1,4 @@
+import './polyfills'
 import KinescopePlayer from './main.vue'
 
 function plugin (Vue) {

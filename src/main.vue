@@ -74,7 +74,7 @@ export default {
       const playerId = this.getNextPlayerId()
       const playerDiv = document.createElement('div')
       playerDiv.setAttribute('id', playerId)
-      this.$refs.player.appendChild(playerDiv)
+      this.$refs.player.replaceChildren(playerDiv)
 
       this.player = await this.createPlayer(playerId)
       EVENTS_MAP.forEach(item => {

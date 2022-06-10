@@ -1,3 +1,4 @@
+import 'regenerator-runtime/runtime'
 import './polyfills'
 import KinescopePlayer from './main.vue'
 

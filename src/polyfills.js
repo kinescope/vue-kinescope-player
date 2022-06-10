@@ -1,6 +1,5 @@
 // polyfill for replaceChildren
 (function () {
-  console.log('polyfilled!')
   if (Node.prototype.replaceChildren === undefined) {
     Node.prototype.replaceChildren = function (addNodes) {
       while (this.lastChild) {

@@ -71,6 +71,10 @@ export default {
       return PLAYER_ID_PREFIX + this.getNextIndex()
     },
     create: async function () {
+      if (!this.$refs.player) {
+        return
+      }
+
       const playerId = this.getNextPlayerId()
       const playerDiv = document.createElement('div')
       playerDiv.setAttribute('id', playerId)
@@ -90,6 +94,7 @@ export default {
       if (!this.player) {
         return
       }
+
       await this.player.destroy()
       this.player = null
     },

@@ -127,6 +127,13 @@ export default {
     <td>The video starts muted</td>
     <td>No</td>
   </tr>
+  <tr>
+    <td>loop</td>
+    <td>Boolean</td>
+    <td>false</td>
+    <td>Loop the video</td>
+    <td>No</td>
+  </tr>
 </table>
 
 ## Events

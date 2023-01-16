@@ -31,6 +31,10 @@ export default {
     muted: {
       type: Boolean,
       default: false
+    },
+    loop: {
+      type: Boolean,
+      default: false
     }
   },
   components: { Loader },
@@ -47,14 +51,15 @@ export default {
   },
   computed: {
     propsChanged () {
-      const { videoId, width, height, autoPlay, muted } = this
+      const { videoId, width, height, autoPlay, muted, loop } = this
 
       return {
         videoId,
         width,
         height,
         autoPlay,
-        muted
+        muted,
+        loop
       }
     }
   },
@@ -107,7 +112,8 @@ export default {
         },
         behaviour: {
           autoPlay: this.autoPlay,
-          muted: this.muted
+          muted: this.muted,
+          loop: this.loop
         }
       }
 

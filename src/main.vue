@@ -150,10 +150,14 @@ export default {
         behaviour: {
           autoPlay: this.autoPlay,
           muted: this.muted,
-          loop: this.loop
+          loop: this.loop,
+          playsInline: this.playsInline
         },
         ui: {
-
+          language: this.language,
+          controls: this.controls,
+          mainPlayButton: this.mainPlayButton,
+          playbackRateButton: this.playbackRateButton
         }
       }
 

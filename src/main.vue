@@ -35,6 +35,26 @@ export default {
     loop: {
       type: Boolean,
       default: false
+    },
+    playsInline: {
+      type: Boolean,
+      default: true
+    },
+    language: {
+      type: String,
+      default: 'en'
+    },
+    controls: {
+      type: Boolean,
+      default: true
+    },
+    mainPlayButton: {
+      type: Boolean,
+      default: true
+    },
+    playbackRateButton: {
+      type: Boolean,
+      default: true
     }
   },
   components: { Loader },
@@ -51,7 +71,19 @@ export default {
   },
   computed: {
     propsChanged () {
-      const { videoId, width, height, autoPlay, muted, loop } = this
+      const {
+        videoId,
+        width,
+        height,
+        autoPlay,
+        muted,
+        loop,
+        playsInline,
+        language,
+        controls,
+        mainPlayButton,
+        playbackRateButton
+      } = this
 
       return {
         videoId,
@@ -59,7 +91,12 @@ export default {
         height,
         autoPlay,
         muted,
-        loop
+        loop,
+        playsInline,
+        language,
+        controls,
+        mainPlayButton,
+        playbackRateButton
       }
     }
   },
@@ -113,7 +150,14 @@ export default {
         behaviour: {
           autoPlay: this.autoPlay,
           muted: this.muted,
-          loop: this.loop
+          loop: this.loop,
+          playsInline: this.playsInline
+        },
+        ui: {
+          language: this.language,
+          controls: this.controls,
+          mainPlayButton: this.mainPlayButton,
+          playbackRateButton: this.playbackRateButton
         }
       }
 

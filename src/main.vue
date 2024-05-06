@@ -55,6 +55,10 @@ export default {
     playbackRateButton: {
       type: Boolean,
       default: true
+    },
+    localStorage: {
+      type: [Boolean, Object],
+      default: true
     }
   },
   components: { Loader },
@@ -82,7 +86,8 @@ export default {
         language,
         controls,
         mainPlayButton,
-        playbackRateButton
+        playbackRateButton,
+        localStorage
       } = this
 
       return {
@@ -96,7 +101,8 @@ export default {
         language,
         controls,
         mainPlayButton,
-        playbackRateButton
+        playbackRateButton,
+        localStorage
       }
     }
   },
@@ -158,7 +164,8 @@ export default {
           controls: this.controls,
           mainPlayButton: this.mainPlayButton,
           playbackRateButton: this.playbackRateButton
-        }
+        },
+        localStorage: this.localStorage
       }
 
       return window.Kinescope.IframePlayer.create(playerId, options)

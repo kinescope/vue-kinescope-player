@@ -1,3 +1,4 @@
+export const IS_BROWSER = typeof window !== 'undefined' && window.document
 export const VIDEO_HOST = 'https://kinescope.io/embed/'
 export const PLAYER_LATEST = 'https://player.kinescope.io/latest/iframe.player.js'
 export const NODE_JS_ID = '__kinescope_player_vue_js'

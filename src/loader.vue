@@ -5,12 +5,14 @@
 </template>
 
 <script>
-import {PLAYER_LATEST, NODE_JS_ID} from './constants'
+import {PLAYER_LATEST, NODE_JS_ID, IS_BROWSER} from './constants'
 
 export default {
   name: 'Loader',
   created () {
-    this.jsLoading()
+    if (IS_BROWSER) {
+      this.jsLoading()
+    }
   },
   methods: {
     loadJsNotLoad () {

@@ -5,35 +5,46 @@
 </template>
 
 <script>
-import {PLAYER_LATEST, NODE_JS_ID} from './constants'
+import { onMounted } from 'vue'
+import { PLAYER_LATEST, NODE_JS_ID } from './constants'
 
 export default {
   name: 'Loader',
-  created () {
-    this.jsLoading()
-  },
-  methods: {
-    loadJsNotLoad () {
+  emits: ['js-load', 'js-load-error'],
+  setup(props, { emit }) {
+    const loadJsNotLoad = () => {
       const el = document.getElementById(NODE_JS_ID)
 
       if (el) {
-        el.addEventListener('load', this.loadJs)
+        el.addEventListener('load', loadJs)
       }
-    },
-    loadJs () {
+    }
+
+    const loadJs = () => {
       const el = document.getElementById(NODE_JS_ID)
 
       if (el) {
-        el.removeEventListener('load', this.loadJs)
+        el.removeEventListener('load', loadJs)
       }
-      this.handleJsLoad()
-    },
-    jsLoading () {
-      if (this.testLoadJs()) {
+      handleJsLoad()
+    }
+
+    const testLoadJs = () => !!document.getElementById(NODE_JS_ID)
+
+    const handleJsLoad = () => {
+      emit('js-load')
+    }
+
+    const handleJsLoadError = (e) => {
+      emit('js-load-error', e)
+    }
+
+    const jsLoading = () => {
+      if (testLoadJs()) {
         if (window && window.Kinescope && window.Kinescope.IframePlayer) {
-          this.handleJsLoad()
+          handleJsLoad()
         } else {
-          this.loadJsNotLoad()
+          loadJsNotLoad()
         }
         return
       }
@@ -42,18 +53,18 @@ export default {
       el.id = NODE_JS_ID
       el.async = false
       document.body.appendChild(el)
-      el.onload = this.handleJsLoad
-      el.onerror = this.handleJsLoadError
+      el.onload = handleJsLoad
+      el.onerror = handleJsLoadError
       el.src = PLAYER_LATEST
-    },
-    testLoadJs () {
-      return !!document.getElementById(NODE_JS_ID)
-    },
-    handleJsLoad () {
-      this.$emit('js-load')
-    },
-    handleJsLoadError (e) {
-      this.$emit('js-load-error', e)
+    }
+
+    onMounted(() => {
+      jsLoading()
+    })
+
+    return {
+      handleJsLoad,
+      handleJsLoadError
     }
   }
 }

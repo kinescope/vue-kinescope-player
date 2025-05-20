@@ -1,5 +1,7 @@
 # Vue wrapper for Kinescope Embed Player 
 
+Starting from version 2.0.0, this package works with Vue 3.
+
 ## Installation
 
 Using npm:
@@ -20,9 +22,11 @@ You can either import it in your whole project
 
  ```js
 import KinescopePlayer from '@kinescope/vue-kinescope-player'
-import Vue from 'vue'
+import { createApp } from 'vue'
 
-Vue.use(KinescopePlayer)
+const app = createApp(App)
+app.use(KinescopePlayer)
+app.mount('#app')
 ```
 
 or import it locally in a component
@@ -31,7 +35,6 @@ or import it locally in a component
 import { KinescopePlayer } from '@kinescope/vue-kinescope-player'
 
 export default {
-  data: {},
   components: { KinescopePlayer }
 }
 ```
@@ -61,23 +64,30 @@ export default {
 </template>
 
 <script>
-import {KinescopePlayer} from '@kinescope/vue-kinescope-player';
+import { ref } from 'vue'
+import { KinescopePlayer } from '@kinescope/vue-kinescope-player'
 
 export default {
-  data() {
-    return {
-      ready: false,
-    };
-  },
-  methods: {
-    handleReady() {
-      this.ready = true;
-    },
-    handleClick() {
-      this.$refs.kinescope.player.play();
-    }
-  },
   components: { KinescopePlayer },
+  setup() {
+    const ready = ref(false)
+    const kinescope = ref(null)
+
+    const handleReady = () => {
+      ready.value = true
+    }
+
+    const handleClick = () => {
+      kinescope.value.player.play()
+    }
+
+    return {
+      ready,
+      kinescope,
+      handleReady,
+      handleClick
+    }
+  }
 }
 </script>
 ```

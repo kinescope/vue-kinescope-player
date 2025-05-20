@@ -1,8 +1,18 @@
 {
 	"presets": [
-		["env", {
-			"modules": false
+		["@babel/preset-env", {
+			"modules": false,
+			"targets": {
+				"browsers": ["> 1%", "last 2 versions", "not ie <= 8"]
+			}
 		}]
 	],
-	"plugins": ["external-helpers"]
+	"plugins": [
+		["@babel/plugin-transform-runtime", {
+			"regenerator": true,
+			"corejs": false,
+			"helpers": true,
+			"useESModules": true
+		}]
+	]
 }

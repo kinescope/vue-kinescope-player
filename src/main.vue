@@ -1,16 +1,19 @@
 <template>
   <Loader @js-load="handleJsLoad" @js-load-error="handleJsLoadError">
-    <div ref="player"></div>
+    <div ref="playerRef"></div>
   </Loader>
 </template>
 
 <script>
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import Loader from './loader.vue'
 import {VIDEO_HOST, PLAYER_ID_PREFIX, EVENTS_MAP} from './constants'
 
 let index = 1
 
 export default {
+  name: 'VueKinescopePlayer',
+  components: { Loader },
   props: {
     videoId: {
       type: [Number, String],
@@ -57,126 +60,110 @@ export default {
       default: true
     }
   },
-  components: { Loader },
-  data () {
-    return {
-      playerLoad: false,
-      player: null
-    }
-  },
-  mounted () {
-    if (this.playerLoad) {
-      this.create()
-    }
-  },
-  computed: {
-    propsChanged () {
-      const {
-        videoId,
-        width,
-        height,
-        autoPlay,
-        muted,
-        loop,
-        playsInline,
-        language,
-        controls,
-        mainPlayButton,
-        playbackRateButton
-      } = this
+  emits: ['js-load', 'js-load-error', ...EVENTS_MAP.map(item => item[0])],
+  setup(props, { emit, expose }) {
+    const playerRef = ref(null)
+    const playerLoad = ref(false)
+    const player = ref(null)
 
-      return {
-        videoId,
-        width,
-        height,
-        autoPlay,
-        muted,
-        loop,
-        playsInline,
-        language,
-        controls,
-        mainPlayButton,
-        playbackRateButton
-      }
-    }
-  },
-  watch: {
-    propsChanged: async function () {
-      await this.updatePlayer()
-    }
-  },
-  methods: {
-    getNextIndex () {
-      return index++
-    },
-    getNextPlayerId () {
-      return PLAYER_ID_PREFIX + this.getNextIndex()
-    },
-    create: async function () {
-      if (!this.$refs.player) {
-        return
-      }
+    const getNextIndex = () => index++
+    const getNextPlayerId = () => PLAYER_ID_PREFIX + getNextIndex()
 
-      const playerId = this.getNextPlayerId()
-      const playerDiv = document.createElement('div')
-      playerDiv.setAttribute('id', playerId)
-      this.$refs.player.replaceChildren(playerDiv)
+    const propsChanged = computed(() => ({
+      videoId: props.videoId,
+      width: props.width,
+      height: props.height,
+      autoPlay: props.autoPlay,
+      muted: props.muted,
+      loop: props.loop,
+      playsInline: props.playsInline,
+      language: props.language,
+      controls: props.controls,
+      mainPlayButton: props.mainPlayButton,
+      playbackRateButton: props.playbackRateButton
+    }))
 
-      this.player = await this.createPlayer(playerId)
-      EVENTS_MAP.forEach(item => {
-        const [vueEvent, playerEvent] = item
-        if (this.player) {
-          this.player.on(playerEvent, (e) => {
-            this.$emit(vueEvent, e.data)
-          })
-        }
-      })
-    },
-    destroy: async function () {
-      if (!this.player) {
-        return
-      }
+    const getIFrameUrl = () => VIDEO_HOST + props.videoId
 
-      await this.player.destroy()
-      this.player = null
-    },
-    createPlayer (playerId) {
+    const createPlayer = async (playerId) => {
       const options = {
-        url: this.getIFrameUrl(),
+        url: getIFrameUrl(),
         size: {
-          width: this.width,
-          height: this.height
+          width: props.width,
+          height: props.height
         },
         behaviour: {
-          autoPlay: this.autoPlay,
-          muted: this.muted,
-          loop: this.loop,
-          playsInline: this.playsInline
+          autoPlay: props.autoPlay,
+          muted: props.muted,
+          loop: props.loop,
+          playsInline: props.playsInline
         },
         ui: {
-          language: this.language,
-          controls: this.controls,
-          mainPlayButton: this.mainPlayButton,
-          playbackRateButton: this.playbackRateButton
+          language: props.language,
+          controls: props.controls,
+          mainPlayButton: props.mainPlayButton,
+          playbackRateButton: props.playbackRateButton
         }
       }
 
       return window.Kinescope.IframePlayer.create(playerId, options)
-    },
-    updatePlayer: async function () {
-      await this.destroy()
-      await this.create()
-    },
-    getIFrameUrl () {
-      return VIDEO_HOST + this.videoId
-    },
-    handleJsLoad () {
-      this.playerLoad = true
-      this.$emit('js-load')
-      this.create()
-    },
-    handleJsLoadError (e) {
-      this.$emit('js-load-error', e)
+    }
+
+    const destroy = async () => {
+      if (!player.value) return
+      await player.value.destroy()
+      player.value = null
+    }
+
+    const create = async () => {
+      if (!playerRef.value) return
+
+      const playerId = getNextPlayerId()
+      const playerDiv = document.createElement('div')
+      playerDiv.setAttribute('id', playerId)
+      playerRef.value.replaceChildren(playerDiv)
+
+      player.value = await createPlayer(playerId)
+      EVENTS_MAP.forEach(([vueEvent, playerEvent]) => {
+        if (player.value) {
+          player.value.on(playerEvent, (e) => {
+            emit(vueEvent, e.data)
+          })
+        }
+      })
+    }
+
+    const updatePlayer = async () => {
+      await destroy()
+      await create()
+    }
+
+    const handleJsLoad = () => {
+      playerLoad.value = true
+      emit('js-load')
+      create()
+    }
+
+    const handleJsLoadError = (e) => {
+      emit('js-load-error', e)
+    }
+
+    expose({ player })
+
+    watch(propsChanged, updatePlayer)
+
+    onMounted(() => {
+      if (playerLoad.value) {
+        create()
+      }
+    })
+
+    onBeforeUnmount(destroy)
+
+    return {
+      playerRef,
+      handleJsLoad,
+      handleJsLoadError
     }
   }
 }

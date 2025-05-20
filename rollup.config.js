@@ -1,56 +1,63 @@
-import resolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
-import buble from 'rollup-plugin-buble'
-import toCamelCase from 'lodash.camelcase'
-import replace from 'rollup-plugin-replace'
+import vue from 'rollup-plugin-vue'
+import babel from '@rollup/plugin-babel'
+import commonjs from '@rollup/plugin-commonjs'
+import resolve from '@rollup/plugin-node-resolve'
+import replace from '@rollup/plugin-replace'
 import { terser } from 'rollup-plugin-terser'
-import vue from 'rollup-plugin-vue2'
 
-const pkg = require('./package.json')
-
-export default [
-  {
-    input: 'src/index.js',
-    output: { format: 'umd', name: toCamelCase(pkg.name), file: 'dist/bundle.umd.js', exports: 'named' },
-    plugins: [
-      resolve({
-        customResolveOptions: {
-          moduleDirectory: 'node_modules'
-        }
-      }),
-      vue(),
-      commonjs(),
-      replace({
-        '__VERSION__': pkg.version
-      }),
-      buble({
-        transforms: {
-          asyncAwait: false
-        }
-      }),
-      terser()
-    ]
+const formats = {
+  es: {
+    file: 'dist/bundle.es.js',
+    format: 'es'
   },
-  {
-    input: 'src/index.js',
-    output: { format: 'es', file: 'dist/bundle.es.js' },
-    plugins: [
-      resolve({
-        customResolveOptions: {
-          moduleDirectory: 'node_modules'
-        }
-      }),
-      vue(),
-      commonjs(),
-      replace({
-        '__VERSION__': pkg.version
-      }),
-      buble({
-        transforms: {
-          asyncAwait: false
-        }
-      }),
-      terser()
-    ]
+  umd: {
+    file: 'dist/bundle.umd.js',
+    format: 'umd',
+    name: 'VueKinescopePlayer',
+    globals: {
+      vue: 'Vue'
+    }
   }
-]
+}
+
+const format = process.env.FORMAT || 'umd'
+const config = {
+  input: 'src/index.js',
+  output: {
+    ...formats[format],
+    exports: 'named'
+  },
+  external: ['vue', '@babel/runtime'],
+  plugins: [
+    vue({
+      css: true,
+      template: {
+        isProduction: true
+      },
+      compilerOptions: {
+        whitespace: 'condense'
+      }
+    }),
+    resolve({
+      extensions: ['.js', '.vue', '.json']
+    }),
+    commonjs({
+      include: /node_modules/
+    }),
+    babel({
+      babelHelpers: 'runtime',
+      exclude: 'node_modules/**',
+      extensions: ['.js', '.vue']
+    }),
+    replace({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+      preventAssignment: true
+    })
+  ]
+}
+
+if (process.env.NODE_ENV === 'production') {
+  config.plugins.push(terser())
+}
+
+export default config

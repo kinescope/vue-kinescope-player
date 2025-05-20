@@ -1,9 +1,10 @@
-import 'regenerator-runtime/runtime'
 import './polyfills'
 import KinescopePlayer from './main.vue'
 
-function plugin (Vue) {
-  Vue.component('kinescope-player', KinescopePlayer)
+const plugin = {
+  install(app) {
+    app.component('kinescope-player', KinescopePlayer)
+  }
 }
 
 export default plugin

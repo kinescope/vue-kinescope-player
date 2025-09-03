@@ -6,7 +6,7 @@
 
 <script>
 import { onMounted } from 'vue'
-import { PLAYER_LATEST, NODE_JS_ID } from './constants'
+import { PLAYER_LATEST, NODE_JS_ID, IS_BROWSER } from './constants'
 
 export default {
   name: 'Loader',
@@ -59,6 +59,7 @@ export default {
     }
 
     onMounted(() => {
+      if (!IS_BROWSER) return;
       jsLoading()
     })
 

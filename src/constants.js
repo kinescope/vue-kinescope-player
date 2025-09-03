@@ -2,6 +2,7 @@ export const VIDEO_HOST = 'https://kinescope.io/embed/'
 export const PLAYER_LATEST = 'https://player.kinescope.io/latest/iframe.player.js'
 export const NODE_JS_ID = '__kinescope_player_vue_js'
 export const PLAYER_ID_PREFIX = '__kinescope_player_'
+export const IS_BROWSER = typeof window !== "undefined" && window.document
 
 export const EVENTS_MAP = [
   ['auto-quality-changed', 'autoqualitychanged'],

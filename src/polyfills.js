@@ -1,6 +1,8 @@
+import { IS_BROWSER } from "./constants";
+
 // polyfill for replaceChildren
 (function () {
-  if (Node && Node.prototype.replaceChildren === undefined) {
+  if (IS_BROWSER && Node.prototype.replaceChildren === undefined) {
     Node.prototype.replaceChildren = function (addNodes) {
       while (this.lastChild) {
         this.removeChild(this.lastChild)

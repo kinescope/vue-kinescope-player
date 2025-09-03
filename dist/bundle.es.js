@@ -1,8 +1,15 @@
 import { onMounted, openBlock, createElementBlock, renderSlot, ref, computed, watch, onBeforeUnmount, resolveComponent, createBlock, withCtx, createElementVNode } from 'vue';
 
+var VIDEO_HOST = 'https://kinescope.io/embed/';
+var PLAYER_LATEST = 'https://player.kinescope.io/latest/iframe.player.js';
+var NODE_JS_ID = '__kinescope_player_vue_js';
+var PLAYER_ID_PREFIX = '__kinescope_player_';
+var IS_BROWSER = typeof window !== "undefined" && window.document;
+var EVENTS_MAP = [['auto-quality-changed', 'autoqualitychanged'], ['call-action', 'callaction'], ['call-bookmark', 'callbookmark'], ['destroy', 'destroy'], ['duration-change', 'durationchange'], ['ended', 'ended'], ['error', 'error'], ['fullscreen-change', 'fullscreenchange'], ['pause', 'pause'], ['play', 'play'], ['playback-rate-change', 'ratechange'], ['playing', 'playing'], ['progress', 'progress'], ['quality-changed', 'qualitychanged'], ['ready', 'ready'], ['seek-chapter', 'seekchapter'], ['seeked', 'seeked'], ['seeking', 'seeking'], ['size-changed', 'sizechanged'], ['time-update', 'timeupdate'], ['volume-change', 'volumechange'], ['waiting', 'waiting']];
+
 // polyfill for replaceChildren
 (function () {
-  if (Node && Node.prototype.replaceChildren === undefined) {
+  if (IS_BROWSER && Node.prototype.replaceChildren === undefined) {
     Node.prototype.replaceChildren = function (addNodes) {
       while (this.lastChild) {
         this.removeChild(this.lastChild);
@@ -459,12 +466,6 @@ try {
 
 var _regeneratorRuntime = /*@__PURE__*/getDefaultExportFromCjs(regenerator);
 
-var VIDEO_HOST = 'https://kinescope.io/embed/';
-var PLAYER_LATEST = 'https://player.kinescope.io/latest/iframe.player.js';
-var NODE_JS_ID = '__kinescope_player_vue_js';
-var PLAYER_ID_PREFIX = '__kinescope_player_';
-var EVENTS_MAP = [['auto-quality-changed', 'autoqualitychanged'], ['call-action', 'callaction'], ['call-bookmark', 'callbookmark'], ['destroy', 'destroy'], ['duration-change', 'durationchange'], ['ended', 'ended'], ['error', 'error'], ['fullscreen-change', 'fullscreenchange'], ['pause', 'pause'], ['play', 'play'], ['playback-rate-change', 'ratechange'], ['playing', 'playing'], ['progress', 'progress'], ['quality-changed', 'qualitychanged'], ['ready', 'ready'], ['seek-chapter', 'seekchapter'], ['seeked', 'seeked'], ['seeking', 'seeking'], ['size-changed', 'sizechanged'], ['time-update', 'timeupdate'], ['volume-change', 'volumechange'], ['waiting', 'waiting']];
-
 var script$1 = {
   name: 'Loader',
   emits: ['js-load', 'js-load-error'],
@@ -510,6 +511,7 @@ var script$1 = {
       el.src = PLAYER_LATEST;
     };
     onMounted(function () {
+      if (!IS_BROWSER) return;
       jsLoading();
     });
     return {

@@ -672,6 +672,10 @@
         type: [Array, Boolean],
         default: null
       },
+      scaleFactors: {
+        type: [Array, Boolean],
+        default: null
+      },
       videoFit: {
         type: String,
         default: null
@@ -730,6 +734,7 @@
           settingsButton: props.settingsButton
         };
         if (props.playbackRates != null) ui.playbackRates = props.playbackRates;
+        if (props.scaleFactors != null) ui.scaleFactors = props.scaleFactors;
         if (props.videoFit != null) ui.videoFit = props.videoFit;
         if (props.watermark != null) {
           ui.watermark = props.watermark;
@@ -764,8 +769,6 @@
           muted: props.muted,
           loop: props.loop,
           playsInline: props.playsInline,
-          volume: props.volume,
-          playbackRate: props.playbackRate,
           textTrack: props.textTrack,
           language: props.language,
           controls: props.controls,
@@ -781,6 +784,7 @@
           pipButton: props.pipButton,
           settingsButton: props.settingsButton,
           playbackRates: JSON.stringify(props.playbackRates),
+          scaleFactors: JSON.stringify(props.scaleFactors),
           videoFit: props.videoFit,
           watermark: JSON.stringify(props.watermark),
           externalId: props.externalId

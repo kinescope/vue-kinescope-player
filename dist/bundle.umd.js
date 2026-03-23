@@ -79,6 +79,41 @@
     return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest();
   }
 
+  function _typeof$1(o) {
+    "@babel/helpers - typeof";
+
+    return _typeof$1 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) {
+      return typeof o;
+    } : function (o) {
+      return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
+    }, _typeof$1(o);
+  }
+
+  function toPrimitive(t, r) {
+    if ("object" != _typeof$1(t) || !t) return t;
+    var e = t[Symbol.toPrimitive];
+    if (void 0 !== e) {
+      var i = e.call(t, r || "default");
+      if ("object" != _typeof$1(i)) return i;
+      throw new TypeError("@@toPrimitive must return a primitive value.");
+    }
+    return ("string" === r ? String : Number)(t);
+  }
+
+  function toPropertyKey(t) {
+    var i = toPrimitive(t, "string");
+    return "symbol" == _typeof$1(i) ? i : i + "";
+  }
+
+  function _defineProperty(e, r, t) {
+    return (r = toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
+      value: t,
+      enumerable: !0,
+      configurable: !0,
+      writable: !0
+    }) : e[r] = t, e;
+  }
+
   function asyncGeneratorStep(n, t, e, r, o, a, c) {
     try {
       var i = n[a](c),
@@ -532,9 +567,11 @@
   script$1.render = render$1;
   script$1.__file = "src/loader.vue";
 
+  function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+  function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
   var index = 1;
   var script = {
-    name: 'VueKinescopePlayer',
+    name: "VueKinescopePlayer",
     components: {
       Loader: script$1
     },
@@ -545,14 +582,14 @@
       },
       width: {
         type: [String, Number],
-        default: '100%'
+        default: "100%"
       },
       height: {
         type: [String, Number],
-        default: '100%'
+        default: "100%"
       },
       autoPlay: {
-        type: Boolean,
+        type: [Boolean, String],
         default: false
       },
       muted: {
@@ -567,9 +604,21 @@
         type: Boolean,
         default: true
       },
+      volume: {
+        type: Number,
+        default: null
+      },
+      playbackRate: {
+        type: Number,
+        default: null
+      },
+      textTrack: {
+        type: [Boolean, String],
+        default: null
+      },
       language: {
         type: String,
-        default: 'en'
+        default: "en"
       },
       controls: {
         type: Boolean,
@@ -581,10 +630,66 @@
       },
       playbackRateButton: {
         type: Boolean,
+        default: false
+      },
+      title: {
+        type: Boolean,
         default: true
+      },
+      controlBar: {
+        type: [Boolean, String],
+        default: true
+      },
+      progressBar: {
+        type: Boolean,
+        default: true
+      },
+      playButton: {
+        type: Boolean,
+        default: true
+      },
+      volumeButton: {
+        type: Boolean,
+        default: true
+      },
+      subtitlesButton: {
+        type: Boolean,
+        default: true
+      },
+      fullscreenButton: {
+        type: [Boolean, String],
+        default: true
+      },
+      pipButton: {
+        type: Boolean,
+        default: true
+      },
+      settingsButton: {
+        type: Boolean,
+        default: true
+      },
+      playbackRates: {
+        type: [Array, Boolean],
+        default: null
+      },
+      scaleFactors: {
+        type: [Array, Boolean],
+        default: null
+      },
+      videoFit: {
+        type: String,
+        default: null
+      },
+      watermark: {
+        type: [String, Object],
+        default: null
+      },
+      externalId: {
+        type: String,
+        default: null
       }
     },
-    emits: ['js-load', 'js-load-error'].concat(_toConsumableArray(EVENTS_MAP.map(function (item) {
+    emits: ["js-load", "js-load-error"].concat(_toConsumableArray(EVENTS_MAP.map(function (item) {
       return item[0];
     }))),
     setup: function setup(props, _ref) {
@@ -599,51 +704,101 @@
       var getNextPlayerId = function getNextPlayerId() {
         return PLAYER_ID_PREFIX + getNextIndex();
       };
-      var propsChanged = vue.computed(function () {
+      var getIFrameUrl = function getIFrameUrl() {
+        return VIDEO_HOST + props.videoId;
+      };
+      var buildOptions = function buildOptions() {
+        var forUpdate = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+        var behavior = {
+          autoPlay: props.autoPlay,
+          muted: props.muted,
+          loop: props.loop,
+          playsInline: props.playsInline
+        };
+        if (props.volume != null) behavior.volume = props.volume;
+        if (props.playbackRate != null) behavior.playbackRate = props.playbackRate;
+        if (props.textTrack != null) behavior.textTrack = props.textTrack;
+        var ui = {
+          language: props.language,
+          controls: props.controls,
+          mainPlayButton: props.mainPlayButton,
+          playbackRateButton: props.playbackRateButton,
+          title: props.title,
+          controlBar: props.controlBar,
+          progressBar: props.progressBar,
+          playButton: props.playButton,
+          volumeButton: props.volumeButton,
+          subtitlesButton: props.subtitlesButton,
+          fullscreenButton: props.fullscreenButton,
+          pipButton: props.pipButton,
+          settingsButton: props.settingsButton
+        };
+        if (props.playbackRates != null) ui.playbackRates = props.playbackRates;
+        if (props.scaleFactors != null) ui.scaleFactors = props.scaleFactors;
+        if (props.videoFit != null) ui.videoFit = props.videoFit;
+        if (props.watermark != null) {
+          ui.watermark = props.watermark;
+        } else if (forUpdate) {
+          ui.watermark = null;
+        }
+        var options = {
+          size: {
+            width: props.width,
+            height: props.height
+          },
+          behavior: behavior,
+          ui: ui
+        };
+        if (props.externalId != null) {
+          options.settings = {
+            externalId: props.externalId
+          };
+        }
+        return options;
+      };
+      var hardProps = vue.computed(function () {
         return {
-          videoId: props.videoId,
+          videoId: props.videoId
+        };
+      });
+      var softProps = vue.computed(function () {
+        return {
           width: props.width,
           height: props.height,
           autoPlay: props.autoPlay,
           muted: props.muted,
           loop: props.loop,
           playsInline: props.playsInline,
+          textTrack: props.textTrack,
           language: props.language,
           controls: props.controls,
           mainPlayButton: props.mainPlayButton,
-          playbackRateButton: props.playbackRateButton
+          playbackRateButton: props.playbackRateButton,
+          title: props.title,
+          controlBar: props.controlBar,
+          progressBar: props.progressBar,
+          playButton: props.playButton,
+          volumeButton: props.volumeButton,
+          subtitlesButton: props.subtitlesButton,
+          fullscreenButton: props.fullscreenButton,
+          pipButton: props.pipButton,
+          settingsButton: props.settingsButton,
+          playbackRates: JSON.stringify(props.playbackRates),
+          scaleFactors: JSON.stringify(props.scaleFactors),
+          videoFit: props.videoFit,
+          watermark: JSON.stringify(props.watermark),
+          externalId: props.externalId
         };
       });
-      var getIFrameUrl = function getIFrameUrl() {
-        return VIDEO_HOST + props.videoId;
-      };
       var createPlayer = /*#__PURE__*/function () {
         var _ref2 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee(playerId) {
-          var options;
           return _regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) switch (_context.prev = _context.next) {
               case 0:
-                options = {
-                  url: getIFrameUrl(),
-                  size: {
-                    width: props.width,
-                    height: props.height
-                  },
-                  behaviour: {
-                    autoPlay: props.autoPlay,
-                    muted: props.muted,
-                    loop: props.loop,
-                    playsInline: props.playsInline
-                  },
-                  ui: {
-                    language: props.language,
-                    controls: props.controls,
-                    mainPlayButton: props.mainPlayButton,
-                    playbackRateButton: props.playbackRateButton
-                  }
-                };
-                return _context.abrupt("return", window.Kinescope.IframePlayer.create(playerId, options));
-              case 2:
+                return _context.abrupt("return", window.Kinescope.IframePlayer.create(playerId, _objectSpread({
+                  url: getIFrameUrl()
+                }, buildOptions())));
+              case 1:
               case "end":
                 return _context.stop();
             }
@@ -691,8 +846,8 @@
                 return _context3.abrupt("return");
               case 2:
                 playerId = getNextPlayerId();
-                playerDiv = document.createElement('div');
-                playerDiv.setAttribute('id', playerId);
+                playerDiv = document.createElement("div");
+                playerDiv.setAttribute("id", playerId);
                 playerRef.value.replaceChildren(playerDiv);
                 _context3.next = 8;
                 return createPlayer(playerId);
@@ -738,18 +893,54 @@
           return _ref7.apply(this, arguments);
         };
       }();
+      var updateOptions = /*#__PURE__*/function () {
+        var _ref8 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime.mark(function _callee5() {
+          return _regeneratorRuntime.wrap(function _callee5$(_context5) {
+            while (1) switch (_context5.prev = _context5.next) {
+              case 0:
+                if (player.value) {
+                  _context5.next = 2;
+                  break;
+                }
+                return _context5.abrupt("return");
+              case 2:
+                _context5.next = 4;
+                return player.value.setOptions(buildOptions(true));
+              case 4:
+              case "end":
+                return _context5.stop();
+            }
+          }, _callee5);
+        }));
+        return function updateOptions() {
+          return _ref8.apply(this, arguments);
+        };
+      }();
       var handleJsLoad = function handleJsLoad() {
         playerLoad.value = true;
-        emit('js-load');
+        emit("js-load");
         create();
       };
       var handleJsLoadError = function handleJsLoadError(e) {
-        emit('js-load-error', e);
+        emit("js-load-error", e);
       };
       expose({
         player: player
       });
-      vue.watch(propsChanged, updatePlayer);
+      vue.watch(hardProps, updatePlayer);
+      vue.watch(softProps, updateOptions);
+      vue.watch(function () {
+        return props.volume;
+      }, function (value) {
+        if (!player.value || value == null) return;
+        player.value.setVolume(value);
+      });
+      vue.watch(function () {
+        return props.playbackRate;
+      }, function (value) {
+        if (!player.value || value == null) return;
+        player.value.setPlaybackRate(value);
+      });
       vue.onMounted(function () {
         if (playerLoad.value) {
           create();
